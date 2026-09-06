@@ -37,6 +37,7 @@ interface ChatMessage {
 interface PuterChatOptions {
   model?: string;
   stream?: boolean;
+  normalize?: boolean;
   max_tokens?: number;
   temperature?: number;
   tools?: {

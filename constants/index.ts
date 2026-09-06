@@ -217,6 +217,8 @@ export const AIResponseFormat = `
       };
       skills: {
         score: number; //max 100
+        matchedSkills: { skill: string; matched: true; required: boolean; matchType: "full" | "partial"; evidence: string }[];
+        missingSkills: { skill: string; matched: false; required: boolean; matchType: "missing"; evidence: null }[];
         tips: {
           type: "good" | "improve";
           tip: string; //make it a short "title" for the actual explanation
@@ -228,21 +230,32 @@ export const AIResponseFormat = `
 export const prepareInstructions = ({
   jobTitle,
   jobDescription,
-  AIResponseFormat,
+  resumeText,
 }: {
   jobTitle: string;
   jobDescription: string;
-  AIResponseFormat: string;
+  resumeText: string;
 }) =>
-  `You are an expert in ATS (Applicant Tracking System) and resume analysis.
-  Please analyze and rate this resume and suggest how to improve it.
-  The rating can be low if the resume is bad.
-  Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
-  If there is a lot to improve, don't hesitate to give low scores. This is to help the user to improve their resume.
-  If available, use the job description for the job user is applying to to give more detailed feedback.
-  If provided, take the job description into consideration.
+  `You are an expert ATS and resume analyst.
+  The RESUME section below is authoritative. Analyze only evidence explicitly present there.
+  Do not claim a skill, experience, education, or project that the resume does not demonstrate.
+  Treat equivalent terms carefully: RESTful APIs and REST APIs, React and React.js, Node and Node.js,
+  GitHub as evidence of Git/GitHub usage, and CSS as related evidence for CSS3 when appropriate.
+  Do not mark a skill as matched from a vague or unrelated mention. Include a short exact evidence excerpt for every matched skill.
+  Extract and report each technology or competency independently. Never combine skills into labels such as "JavaScript and TypeScript" or "Node.js and Express.js".
+  For every listed skill, set matched=true only when the resume evidence supports it; otherwise set matched=false and evidence=null.
+  Use matchType "full", "partial", or "missing" consistently with matched. PostgreSQL is distinct from SQL database experience; MySQL is partial evidence for SQL databases but not PostgreSQL.
+  Separate required skills from preferred skills. Required skills must weigh substantially more than preferred skills.
+  Use these approximate overall weights: required skills 55%, relevant experience 15%, projects 10%, education 5%, ATS/formatting 5%, content and structure 10%.
+  Missing preferred skills should have only a small effect. Score ATS, toneAndStyle, content, structure, and skills independently.
   The job title is: ${jobTitle}
-  The job description is: ${jobDescription}
-  Provide the feedback using the following format: ${AIResponseFormat}
-  Return the analysis as a JSON object, without any other text and without the backticks.
-  Do not include any other text or comments.`;
+
+  JOB DESCRIPTION:
+  ${jobDescription}
+
+  RESUME:
+  ${resumeText}
+
+  Return only valid JSON matching this format:
+  ${AIResponseFormat}
+  Do not include Markdown fences or explanatory text.`;

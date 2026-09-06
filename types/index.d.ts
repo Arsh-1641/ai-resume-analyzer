@@ -49,6 +49,20 @@ interface Feedback {
   };
   skills: {
     score: number;
+    matchedSkills?: {
+      skill: string;
+      matched: true;
+      required: boolean;
+      matchType: "full" | "partial";
+      evidence: string;
+    }[];
+    missingSkills?: {
+      skill: string;
+      matched: false;
+      required: boolean;
+      matchType: "missing";
+      evidence: null;
+    }[];
     tips: {
       type: "good" | "improve";
       tip: string;
