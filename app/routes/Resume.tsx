@@ -51,8 +51,8 @@ function Resume() {
             <span className='text-gray-800 text-sm font-semibold'>Back to Homepage</span>
           </Link>
         </nav>
-        <div className='flex flex-row w-full max-lg:flex-col-reverse'>
-            <section className='feedback-section flex w-full min-w-0 min-h-screen bg-[url("/images/bg-small.svg")] bg-cover sticky top-0 items-center justify-center overflow-hidden px-4 lg:px-8' >
+        <div className='flex flex-row w-full max-lg:flex-col-reverse lg:min-h-screen'>
+            <section className='feedback-section flex w-full lg:w-1/2 min-w-0 min-h-screen bg-[url("/images/bg-small.svg")] bg-cover sticky top-0 items-center justify-center overflow-hidden px-4 lg:px-8'>
               {imageUrl && resumeUrl && (
                 <div className='animate-in fade-in duration-1000 gradient-border max-sm:m-0 max-xl:h-fit w-full max-w-3xl min-w-0'>
                   <a href={resumeUrl} target='_blank'>
@@ -62,9 +62,9 @@ function Resume() {
                     alt="" />
                   </a>
                 </div>
-              )}  
+              )}
             </section>
-            <section className="feedback-section">
+            <section className="feedback-section w-full lg:w-1/2 min-w-0">
               <h2 className='text-4xl text-black font-bold'>Resume Review</h2>
               {feedback ? (
                 <div className='flex flex-col gap-8 animate-in fade-in duration-1000'>
